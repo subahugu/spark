@@ -32,6 +32,7 @@ private[ui] case class ExecutorSummaryInfo(
     hostPort: String,
     rddBlocks: Int,
     memoryUsed: Long,
+    maxMemUsed: Long,
     diskUsed: Long,
     activeTasks: Int,
     failedTasks: Int,
@@ -75,6 +76,7 @@ private[ui] class ExecutorsPage(
           <th>Address</th>
           <th>RDD Blocks</th>
           <th><span data-toggle="tooltip" title={ToolTips.STORAGE_MEMORY}>Storage Memory</span></th>
+          <th>Peak Memory Used</th>
           <th>Disk Used</th>
           <th>Active Tasks</th>
           <th>Failed Tasks</th>
@@ -132,6 +134,7 @@ private[ui] class ExecutorsPage(
         {Utils.bytesToString(memoryUsed)} /
         {Utils.bytesToString(maximumMemory)}
       </td>
+      <td>{Utils.bytesToString(info.maxMemUsed)}</td>
       <td sorttable_customkey={diskUsed.toString}>
         {Utils.bytesToString(diskUsed)}
       </td>
@@ -189,6 +192,7 @@ private[spark] object ExecutorsPage {
     val hostPort = status.blockManagerId.hostPort
     val rddBlocks = status.numBlocks
     val memUsed = status.memUsed
+    val maxMemUsed = status.maxMemUsed
     val maxMem = status.maxMem
     val diskUsed = status.diskUsed
     val activeTasks = listener.executorToTasksActive.getOrElse(execId, 0)
@@ -206,6 +210,7 @@ private[spark] object ExecutorsPage {
       hostPort,
       rddBlocks,
       memUsed,
+      maxMemUsed,
       diskUsed,
       activeTasks,
       failedTasks,

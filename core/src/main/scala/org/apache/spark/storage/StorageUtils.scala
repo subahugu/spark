@@ -174,6 +174,20 @@ class StorageStatus(val blockManagerId: BlockManagerId, val maxMem: Long) {
   /** Return the memory used by this block manager. */
   def memUsed: Long = _nonRddStorageInfo._1 + _rddBlocks.keys.toSeq.map(memUsedByRdd).sum
 
+  /** variable containing the max memory used yet. */
+  private var _maxMemUsed = 0L
+
+  /** Return the max memory used by this block manager. */
+  def maxMemUsed: Long = {
+    val _memUsed = memUsed
+    if(_memUsed > _maxMemUsed) {
+      _maxMemUsed = _memUsed
+    }
+    // scalastyle:off println
+    println("SURESH: maxMemUsed: " + _maxMemUsed)
+    _maxMemUsed
+  }
+
   /** Return the disk space used by this block manager. */
   def diskUsed: Long = _nonRddStorageInfo._2 + _rddBlocks.keys.toSeq.map(diskUsedByRdd).sum
 

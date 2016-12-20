@@ -50,6 +50,7 @@ class ExecutorSummary private[spark](
     val hostPort: String,
     val rddBlocks: Int,
     val memoryUsed: Long,
+    val maxMemUsed: Long,
     val diskUsed: Long,
     val activeTasks: Int,
     val failedTasks: Int,
